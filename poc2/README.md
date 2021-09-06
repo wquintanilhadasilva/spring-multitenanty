@@ -19,3 +19,38 @@ The following guides illustrate how to use some features concretely:
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 
 [Aplicações Multitentanty](https://gasparbarancelli.com/post/multi-tenancy-com-hibernate-e-spring-boot)
+
+
+## Note: Once Multi-Tenancy is enabled all the DDL needs to be executed manually before staring the application
+
+## Compile and package
+
+Being Maven centric, you can compile and package it without tests using:
+
+```
+mvn clean package -Dmaven.test.skip=true
+```
+
+Once you have your jar file, you can run it.
+
+## Run it
+
+Before, create database and tabeles with commands in `resources/DDL.sql` file
+
+To run it you can go to the Maven target folder generated and execute the following command:
+
+```
+java -jar multitenanty-XXX.jar
+```
+
+## Testing
+
+Once started you can go and request the data using different tenants :
+
+* `curl -X POST   http://localhost:8080/ -H 'Content-Type: application/json' -H 'schema: test1' -d '{"name":"Mumbai"}'`
+
+* `curl -X POST   http://localhost:8080/ -H 'Content-Type: application/json' -H 'schema: test2' -d '{"name":"Kolkata"}'`
+
+* `curl -X GET   http://localhost:8080/ -H 'Content-Type: application/json' -H 'schema: test1'`
+
+* `curl -X GET   http://localhost:8080/ -H 'Content-Type: application/json' -H 'schema: test2'`
