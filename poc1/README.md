@@ -16,10 +16,10 @@ We can implement multi-tenancy using any of the following approaches:</br>
 
 By Default <b>Shared Database, Separate Schema </b>approach is enabled. It works with JdbcTemplate also which is not
 natively supported by Spring Multi-Tenancy. When using Multi-tenancy in Spring Boot <b>Table needs to be created
-externally</b>. Auto table creation needs to be turned off. We will use Public Schema as the default schema. The DDL to
-create the table are present in DDL.sql in resources folder.
+externally</b>. Auto table creation needs to be turned off. We will use Public Schema as the default schema.
 
 ## Note: Once Multi-Tenancy is enabled all the DDL needs to be executed manually before staring the application
+
 
 ## Compile and package
 
@@ -32,8 +32,6 @@ mvn clean package -Dmaven.test.skip=true
 Once you have your jar file, you can run it.
 
 ## Run it
-
-Before, create database and tabeles with commands in `resources/DDL.sql` file
 
 To run it you can go to the Maven target folder generated and execute the following command:
 
