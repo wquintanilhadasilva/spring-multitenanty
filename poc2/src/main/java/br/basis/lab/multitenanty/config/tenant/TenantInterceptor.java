@@ -15,7 +15,7 @@ public class TenantInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) {
         Optional.ofNullable(req.getHeader("schema"))
-                .map(String::toUpperCase)
+//                .map(String::toUpperCase)
                 .ifPresent(TenantContext::setCurrentTenant);
         return true;
     }

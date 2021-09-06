@@ -32,7 +32,7 @@ public class MultiTenantConnectionProviderImpl implements MultiTenantConnectionP
     public Connection getConnection(String tenantIdentifier) throws SQLException {
         final Connection connection = getAnyConnection();
         try {
-            connection.createStatement().execute("USE " + tenantIdentifier);
+            connection.setSchema(tenantIdentifier);
         } catch (SQLException e) {
             throw new HibernateException("Não foi possivel alterar para o schema [" + tenantIdentifier + "]", e);
         }
@@ -42,7 +42,7 @@ public class MultiTenantConnectionProviderImpl implements MultiTenantConnectionP
     @Override
     public void releaseConnection(String tenantIdentifier, Connection connection) throws SQLException {
         try (connection) {
-            connection.createStatement().execute("USE " + TenantContext.DEFAULT_TENANT);
+            connection.setSchema(TenantContext.DEFAULT_TENANT);
         } catch (SQLException e) {
             throw new HibernateException("Não foi se conectar ao schema padrão", e);
         }
