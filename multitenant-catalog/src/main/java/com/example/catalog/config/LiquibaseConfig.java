@@ -2,6 +2,7 @@ package com.example.catalog.config;
 
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
@@ -18,6 +19,9 @@ import javax.sql.DataSource;
 @ConditionalOnProperty(name = "multitenancy.master.liquibase.enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(LiquibaseProperties.class)
 public class LiquibaseConfig {
+
+    @Value("${multitenancy.master.schema:#{null}}")
+    private String masterSchema;
 
     @Bean
     @ConfigurationProperties("multitenancy.master.liquibase")

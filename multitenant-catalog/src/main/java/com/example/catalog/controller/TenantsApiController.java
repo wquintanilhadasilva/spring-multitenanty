@@ -2,6 +2,7 @@ package com.example.catalog.controller;
 
 import com.example.catalog.controller.viewmodel.TenantDTO;
 import com.example.catalog.service.TenantManagementService;
+import com.example.catalog.service.TenantSchemaDatabaseManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class TenantsApiController {
 
     @Autowired
-    private TenantManagementService tenantManagementService;
+    private TenantSchemaDatabaseManagementService tenantManagementService;
 
     @PostMapping("/tenants")
     public ResponseEntity<Void> createTenant(@RequestBody TenantDTO tenantDTO) { //(@RequestParam String tenantId, @RequestParam String db, @RequestParam String password) {

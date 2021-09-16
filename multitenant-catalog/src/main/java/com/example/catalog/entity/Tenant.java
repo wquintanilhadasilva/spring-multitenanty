@@ -33,4 +33,8 @@ public class Tenant {
     @Size(max = 256)
     @Column(name = "url")
     private String url;
+
+    @Size(max = 30)
+    @Column(name = "schema")
+    private String schema;
 }
