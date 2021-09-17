@@ -26,11 +26,11 @@ public class TenantSchemaManagementService {
 
     @Autowired
     public TenantSchemaManagementService(DataSource dataSource,
-                                       JdbcTemplate jdbcTemplate,
-                                       @Qualifier("tenantLiquibaseProperties")
-                                               LiquibaseProperties liquibaseProperties,
-                                       ResourceLoader resourceLoader,
-                                       TenantRepository tenantRepository) {
+                                         JdbcTemplate jdbcTemplate,
+                                         @Qualifier("tenantLiquibaseProperties")
+                                                     LiquibaseProperties liquibaseProperties,
+                                         ResourceLoader resourceLoader,
+                                         TenantRepository tenantRepository) {
         this.dataSource = dataSource;
         this.jdbcTemplate = jdbcTemplate;
         this.liquibaseProperties = liquibaseProperties;

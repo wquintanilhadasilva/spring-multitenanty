@@ -13,11 +13,13 @@ spring:
       ddl-auto: create
 #      ddl-auto: update
       database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate.default_schema: public
 
 multitenancy:
   master:
     datasource:
-      url: jdbc:postgresql://localhost:15432/catalogo
+      url: jdbc:postgresql://localhost:15432/postgres
       username: postgres
       password: 123456
       driver-class-name: org.postgresql.Driver
@@ -25,7 +27,7 @@ multitenancy:
       changeLog: classpath:db/changelog/db.changelog-master.yaml
   tenant:
     datasource:
-      url-prefix: jdbc:postgresql://localhost:15432/
+#      url-prefix: jdbc:postgresql://localhost:15432/
     liquibase:
       changeLog: classpath:db/changelog/db.changelog-tenant.yaml
 
