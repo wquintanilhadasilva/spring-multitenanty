@@ -1,0 +1,29 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: customer
+      author: wedson
+      changes:
+        - createSequence:
+            sequenceName: customer_seq
+            startValue: 100000
+            incrementBy: 50
+        - createTable:
+            tableName: customer
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: cust_pkey
+              - column:
+                  name: cnpj
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

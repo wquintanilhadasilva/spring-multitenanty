@@ -68,6 +68,43 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+<!--				<version>3.8.0</version>-->
+				<configuration>
+<!--					<propertyFile>liquibase.properties</propertyFile>-->
+					<changeLogFile>${project.basedir}/src/main/resources/db/changelog/db.changelog-tenant.yaml</changeLogFile>
+					<url>jdbc:postgresql://localhost:15432/postgres</url>
+					<username>postgres</username>
+					<password>123456</password>
+					<driver>org.postgresql.Driver</driver>
+					<verbose>true</verbose>
+					<logging>debug</logging>
+					<contexts>!test</contexts>
+				</configuration>
+				<executions>
+					<execution>
+						<id>liquibase-install</id>
+						<phase>install</phase>
+						<goals>
+							<goal>update</goal>
+						</goals>
+<!--						<configuration>-->
+<!--							<url>jdbc:postgresql://localhost:15432/postgres</url>-->
+<!--							<username>postgres</username>-->
+<!--							<password>123456</password>-->
+<!--						</configuration>-->
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>9.1-901-1.jdbc4</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 
