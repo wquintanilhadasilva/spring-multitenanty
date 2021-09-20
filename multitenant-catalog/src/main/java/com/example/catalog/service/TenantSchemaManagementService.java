@@ -10,10 +10,13 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Service
 public class TenantSchemaManagementService {
@@ -48,7 +51,9 @@ public class TenantSchemaManagementService {
         }
 
         try {
-            createSchema(schema);
+            if(!schemaExists(schema)) {
+                createSchema(schema);
+            }
             runLiquibase(dataSource, schema);
         } catch (DataAccessException e) {
             throw new TenantCreationException("Error when creating schema: " + schema, e);
@@ -64,6 +69,12 @@ public class TenantSchemaManagementService {
 
     private void createSchema(String schema) {
         jdbcTemplate.execute((StatementCallback<Boolean>) stmt -> stmt.execute("CREATE SCHEMA " + schema));
+    }
+
+    private boolean schemaExists(String schema) {
+        String sql = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = ?";
+        String schemaName = jdbcTemplate.query(sql, new SchemaMapExtractor(), schema);
+        return null != schemaName && "" != schemaName;
     }
 
     private void runLiquibase(DataSource dataSource, String schema) throws LiquibaseException {
@@ -89,6 +100,17 @@ public class TenantSchemaManagementService {
         liquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
         liquibase.setTestRollbackOnUpdate(liquibaseProperties.isTestRollbackOnUpdate());
         return liquibase;
+    }
+
+    private static final class SchemaMapExtractor implements ResultSetExtractor<String> {
+        @Override
+        public String extractData(ResultSet rs) throws SQLException, DataAccessException {
+            String schema = null;
+            while (rs.next()) {
+                schema = rs.getString("schema_name");
+            }
+            return schema;
+        }
     }
 
 }

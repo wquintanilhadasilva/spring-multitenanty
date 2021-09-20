@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="andre.souza" id="202108261233-01">
+
+        <createTable tableName="cg_esfera" remarks="Tabela responsável por armazenar as esferas de poder">
+            <column name="id_esfera" type="bigint" autoIncrement="true" remarks="Identificador da esfera de poder">
+                <constraints primaryKey="true" primaryKeyName="pk_esfera"/>
+            </column>
+            <column name="nm_esfera" type="varchar(100)" remarks="Nome da esfera de poder">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-02">
+
+        <createTable tableName="cg_poder" remarks="Tabela responsável por armazenar o poder">
+            <column name="id_poder" type="bigint" autoIncrement="true" remarks="Identificador do poder">
+                <constraints primaryKey="true" primaryKeyName="pk_poder"/>
+            </column>
+            <column name="nm_poder" type="varchar(100)" remarks="Nome do poder">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-03">
+
+        <createTable tableName="cg_natureza_juridica" remarks="Tabela responsável por armazenar a natureza jurídica">
+            <column name="id_natureza_juridica" type="bigint" autoIncrement="true" remarks="Identificador da natureza jurídica">
+                <constraints primaryKey="true" primaryKeyName="pk_natureza_juridica"/>
+            </column>
+            <column name="nm_natureza_juridica" type="varchar(100)" remarks="Nome da natureza jurídica">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-04">
+
+        <createTable tableName="cg_tipo_unidade"
+                     remarks="Tabela responsável por armazenar os tipos de unidades organizacionais">
+            <column name="cd_tipo_unidade" type="char(2)" remarks="Identificador do tipo de unidade organizacional">
+                <constraints primaryKey="true" primaryKeyName="pk_tipo_unidade"/>
+            </column>
+            <column name="nm_tipo_unidade" type="varchar(100)" remarks="Nome do tipo da unidade organizacional">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-05">
+
+        <createTable tableName="cg_categoria_unidade"
+                     remarks="Tabela responsável por armazenar as categorias das unidades">
+            <column name="id_categoria_unidade" type="bigint" autoIncrement="true" remarks="Identificador da categoria da unidade">
+                <constraints primaryKey="true" primaryKeyName="pk_categoria_unidade"/>
+            </column>
+            <column name="nm_categoria_unidade" type="varchar(100)" remarks="Nome da categoria da unidade">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-06">
+
+        <createTable tableName="cg_unidade" remarks="Tabela responsável por armazenar as unidades organizacionais">
+            <column name="id_unidade" type="bigint" autoIncrement="true"
+                    remarks="Identificador da unidade organizacional">
+                <constraints primaryKey="true" primaryKeyName="pk_unidade"/>
+            </column>
+            <column name="id_unidade_pai" type="bigint" remarks="Identificador da Unidade Pai"/>
+            <column name="id_orgao_entidade" type="bigint" remarks="Identificador do Órgão/Entidade"/>
+            <column name="id_categoria_unidade" type="bigint" remarks="Identificador da Categoria"/>
+            <column name="id_esfera" type="bigint" remarks="Identificador da Esfera"/>
+            <column name="id_poder" type="bigint" remarks="Identificador do Poder"/>
+            <column name="id_natureza_juridica" type="bigint" remarks="Identificador da Natureza Jurídica"/>
+            <column name="cd_tipo_unidade" type="char(2)" remarks="Código do Tipo de Unidade"/>
+            <column name="nm_unidade" type="varchar(100)" remarks="Nome da unidade organizacional">
+                <constraints nullable="false"/>
+            </column>
+            <column name="de_sigla_unidade" type="varchar(100)" remarks="Sigla da unidade organizacional">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_categoria_unidade"
+                                 baseColumnNames="id_categoria_unidade"
+                                 baseTableName="cg_unidade"
+                                 referencedColumnNames="id_categoria_unidade"
+                                 referencedTableName="cg_categoria_unidade"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_esfera"
+                                 baseColumnNames="id_esfera"
+                                 baseTableName="cg_unidade"
+                                 referencedColumnNames="id_esfera"
+                                 referencedTableName="cg_esfera"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_poder"
+                                 baseColumnNames="id_poder"
+                                 baseTableName="cg_unidade"
+                                 referencedColumnNames="id_poder"
+                                 referencedTableName="cg_poder"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_natureza_juridica"
+                                 baseColumnNames="id_natureza_juridica"
+                                 baseTableName="cg_unidade"
+                                 referencedColumnNames="id_natureza_juridica"
+                                 referencedTableName="cg_natureza_juridica"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_tipo_unidade"
+                                 baseColumnNames="cd_tipo_unidade"
+                                 baseTableName="cg_unidade"
+                                 referencedColumnNames="cd_tipo_unidade"
+                                 referencedTableName="cg_tipo_unidade"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <createIndex indexName="idx_cg_unidade_01" tableName="cg_unidade">
+            <column descending="true" name="id_categoria_unidade"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_02" tableName="cg_unidade">
+            <column descending="true" name="id_esfera"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_03" tableName="cg_unidade">
+            <column descending="true" name="id_poder"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_04" tableName="cg_unidade">
+            <column descending="true" name="id_natureza_juridica"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_05" tableName="cg_unidade">
+            <column descending="true" name="id_unidade_pai"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_06" tableName="cg_unidade">
+            <column descending="true" name="id_orgao_entidade"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_07" tableName="cg_unidade">
+            <column descending="true" name="cd_tipo_unidade"/>
+        </createIndex>
+
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-07">
+
+        <createTable tableName="cg_unidade_nao_oficial"
+                     remarks="Tabela responsável por armazenar as unidades não oficiais">
+            <column name="id_unidade_nao_oficial" type="bigint" autoIncrement="true"
+                    remarks="Identificador da unidade não oficial">
+                <constraints primaryKey="true" primaryKeyName="pk_unidade_nao_oficial"/>
+            </column>
+            <column name="id_unidade" type="bigint" remarks="Identificador da unidade">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_categoria_unidade" type="bigint" remarks="Identificador da Categoria"/>
+            <column name="id_esfera" type="bigint" remarks="Identificador da Esfera"/>
+            <column name="id_poder" type="bigint" remarks="Identificador do Poder"/>
+            <column name="id_natureza_juridica" type="bigint" remarks="Identificador da Natureza Jurídica"/>
+            <column name="cd_unidade_nao_oficial" type="varchar(100)" remarks="Código da unidade não oficial">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nm_unidade_nao_oficial" type="varchar(100)"
+                    remarks="Nome de denominação da unidade não oficial">
+                <constraints nullable="false"/>
+            </column>
+            <column name="de_sigla_unidade_nao_oficial" type="varchar(10)" remarks="Sigla da unidade não oficial">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_nao_oficial_unidade"
+                                 baseColumnNames="id_unidade"
+                                 baseTableName="cg_unidade_nao_oficial"
+                                 referencedColumnNames="id_unidade"
+                                 referencedTableName="cg_unidade"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_nao_oficial_categoria_unidade"
+                                 baseColumnNames="id_categoria_unidade"
+                                 baseTableName="cg_unidade_nao_oficial"
+                                 referencedColumnNames="id_categoria_unidade"
+                                 referencedTableName="cg_categoria_unidade"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_nao_oficial_esfera"
+                                 baseColumnNames="id_esfera"
+                                 baseTableName="cg_unidade_nao_oficial"
+                                 referencedColumnNames="id_esfera"
+                                 referencedTableName="cg_esfera"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_nao_oficial_poder"
+                                 baseColumnNames="id_poder"
+                                 baseTableName="cg_unidade_nao_oficial"
+                                 referencedColumnNames="id_poder"
+                                 referencedTableName="cg_poder"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <addForeignKeyConstraint constraintName="fk_unidade_nao_oficial_natureza_juridica"
+                                 baseColumnNames="id_natureza_juridica"
+                                 baseTableName="cg_unidade_nao_oficial"
+                                 referencedColumnNames="id_natureza_juridica"
+                                 referencedTableName="cg_natureza_juridica"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
+        <createIndex indexName="idx_cg_unidade_nao_oficial_01" tableName="cg_unidade_nao_oficial">
+            <column descending="true" name="id_unidade"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_nao_oficial_02" tableName="cg_unidade_nao_oficial">
+            <column descending="true" name="id_categoria_unidade"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_nao_oficial_03" tableName="cg_unidade_nao_oficial">
+            <column descending="true" name="id_esfera"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_nao_oficial_04" tableName="cg_unidade_nao_oficial">
+            <column descending="true" name="id_poder"/>
+        </createIndex>
+
+        <createIndex indexName="idx_cg_unidade_nao_oficial_05" tableName="cg_unidade_nao_oficial">
+            <column descending="true" name="id_natureza_juridica"/>
+        </createIndex>
+
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-08">
+
+        <createTable tableName="cg_feriado" remarks="Tabela responsável por armazenar os feriados">
+            <column name="id_feriado" type="bigint" autoIncrement="true" remarks="Identificador do feriado">
+                <constraints primaryKey="true" primaryKeyName="pk_feriado"/>
+            </column>
+            <column name="de_feriado" type="varchar(100)" remarks="Descrição do feriado">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dt_feriado" type="date" remarks="Data do feriado">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hr_feriado_ini" type="time" remarks="Hora de início do feriado">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hr_feriado_fim" type="time" remarks="Hora de término do feriado">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-09">
+        <insert tableName="cg_esfera">
+            <column name="id_esfera" value="1"/>
+            <column name="nm_esfera" value="Federal"/>
+        </insert>
+        <insert tableName="cg_esfera">
+            <column name="id_esfera" value="2"/>
+            <column name="nm_esfera" value="Estadual/Distrital"/>
+        </insert>
+        <insert tableName="cg_esfera">
+            <column name="id_esfera" value="3"/>
+            <column name="nm_esfera" value="Municipal"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-10">
+        <insert tableName="cg_poder">
+            <column name="id_poder" value="1"/>
+            <column name="nm_poder" value="Executivo"/>
+        </insert>
+        <insert tableName="cg_poder">
+            <column name="id_poder" value="2"/>
+            <column name="nm_poder" value="Legislativo"/>
+        </insert>
+        <insert tableName="cg_poder">
+            <column name="id_poder" value="3"/>
+            <column name="nm_poder" value="Judiciário"/>
+        </insert>
+        <insert tableName="cg_poder">
+            <column name="id_poder" value="4"/>
+            <column name="nm_poder" value="Funções Essenciais à Justiça"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-11">
+        <insert tableName="cg_natureza_juridica">
+            <column name="id_natureza_juridica" value="1"/>
+            <column name="nm_natureza_juridica" value="Empresa Pública"/>
+        </insert>
+        <insert tableName="cg_natureza_juridica">
+            <column name="id_natureza_juridica" value="2"/>
+            <column name="nm_natureza_juridica" value="Fundação Pública"/>
+        </insert>
+        <insert tableName="cg_natureza_juridica">
+            <column name="id_natureza_juridica" value="3"/>
+            <column name="nm_natureza_juridica" value="Administração Direta"/>
+        </insert>
+        <insert tableName="cg_natureza_juridica">
+            <column name="id_natureza_juridica" value="4"/>
+            <column name="nm_natureza_juridica" value="Autarquia"/>
+        </insert>
+        <insert tableName="cg_natureza_juridica">
+            <column name="id_natureza_juridica" value="6"/>
+            <column name="nm_natureza_juridica" value="Sociedade de Economia Mista"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-12">
+        <insert tableName="cg_tipo_unidade">
+            <column name="cd_tipo_unidade" value="ET"/>
+            <column name="nm_tipo_unidade" value="Ente"/>
+        </insert>
+        <insert tableName="cg_tipo_unidade">
+            <column name="cd_tipo_unidade" value="EN"/>
+            <column name="nm_tipo_unidade" value="Entidade"/>
+        </insert>
+        <insert tableName="cg_tipo_unidade">
+            <column name="cd_tipo_unidade" value="UA"/>
+            <column name="nm_tipo_unidade" value="Unidade Administrativa"/>
+        </insert>
+        <insert tableName="cg_tipo_unidade">
+            <column name="cd_tipo_unidade" value="UC"/>
+            <column name="nm_tipo_unidade" value="Unidade Colegiada"/>
+        </insert>
+        <insert tableName="cg_tipo_unidade">
+            <column name="cd_tipo_unidade" value="OR"/>
+            <column name="nm_tipo_unidade" value="Órgão"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="andre.souza" id="202108261233-13">
+        <insert tableName="cg_categoria_unidade">
+            <column name="id_categoria_unidade" value="83"/>
+            <column name="nm_categoria_unidade" value="Órgão Central"/>
+        </insert>
+        <insert tableName="cg_categoria_unidade">
+            <column name="id_categoria_unidade" value="70"/>
+            <column name="nm_categoria_unidade" value="Órgão Setorial"/>
+        </insert>
+        <insert tableName="cg_categoria_unidade">
+            <column name="id_categoria_unidade" value="71"/>
+            <column name="nm_categoria_unidade" value="Órgão Seccionais"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
