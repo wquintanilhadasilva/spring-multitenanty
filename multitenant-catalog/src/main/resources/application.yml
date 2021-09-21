@@ -3,11 +3,6 @@ server:
 spring:
   application:
     name: Catalog
-#  datasource:
-#    url: 'jdbc:postgresql://localhost:15432/postgres?ApplicationName=Catalog'
-#    username: 'postgres'
-#    password: '123456'
-#    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
 #      ddl-auto: create
@@ -26,10 +21,5 @@ multitenancy:
     liquibase:
       changeLog: classpath:db/changelog/db.changelog-master.yaml
   tenant:
-    datasource:
     liquibase:
       changeLog: classpath:db/changelog/db.changelog-tenant.yaml
-
-encryption:
-  secret: verySecret
-  salt: chezuis

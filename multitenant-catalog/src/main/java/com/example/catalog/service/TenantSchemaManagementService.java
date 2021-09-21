@@ -47,6 +47,9 @@ public class TenantSchemaManagementService {
 
     public void createTenant(String tenantId, String schema) {
 
+        // Converte o nome do tenant em lowercaswe
+        schema = schema.toLowerCase();
+
         // Verify schema string to prevent SQL injection
         if (!schema.matches(VALID_SCHEMA_NAME_REGEXP)) {
             throw new TenantCreationException("Invalid schema name: " + schema);
