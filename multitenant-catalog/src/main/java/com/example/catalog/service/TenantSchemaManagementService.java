@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TenantSchemaManagementService {
@@ -67,6 +69,13 @@ public class TenantSchemaManagementService {
         tenantRepository.save(tenant);
     }
 
+    public void updateAllTenantSchemas() {
+        var tenants = this.loadAllSchemas();
+        if(tenants != null){
+            tenants.forEach(tenant -> createTenant(tenant.getTenantId(), tenant.getSchema()));
+        }
+    }
+
     private void createSchema(String schema) {
         jdbcTemplate.execute((StatementCallback<Boolean>) stmt -> stmt.execute("CREATE SCHEMA " + schema));
     }
@@ -102,6 +111,11 @@ public class TenantSchemaManagementService {
         return liquibase;
     }
 
+    private List<Tenant>loadAllSchemas() {
+        List<Tenant> tenants = tenantRepository.findAll();// jdbcTemplate.query(sql, new ListSchemaMapExtractor());
+        return tenants;
+    }
+
     private static final class SchemaMapExtractor implements ResultSetExtractor<String> {
         @Override
         public String extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -112,5 +126,20 @@ public class TenantSchemaManagementService {
             return schema;
         }
     }
+
+//    private static final class ListSchemaMapExtractor implements ResultSetExtractor<List<Tenant>> {
+//        @Override
+//        public List<Tenant> extractData(ResultSet rs) throws SQLException, DataAccessException {
+//            List<Tenant> schemas = new ArrayList<>();
+//            while (rs.next()) {
+//                Tenant t = Tenant.builder()
+//                    .tenantId(rs.getString("tenant_id"))
+//                    .schema(rs.getString("schema"))
+//                    .build();
+//                schemas.add(t);
+//            }
+//            return schemas;
+//        }
+//    }
 
 }

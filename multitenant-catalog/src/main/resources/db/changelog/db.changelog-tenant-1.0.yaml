@@ -56,3 +56,27 @@ databaseChangeLog:
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: v3
+      author: wedson
+      changes:
+        - createTable:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: books_pkey
+              - column:
+                  name: book_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: author
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

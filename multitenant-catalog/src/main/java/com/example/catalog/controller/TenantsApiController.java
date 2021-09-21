@@ -18,8 +18,14 @@ public class TenantsApiController {
     private TenantSchemaManagementService tenantManagementService;
 
     @PostMapping("/tenants")
-    public ResponseEntity<Void> createTenant(@RequestBody TenantDTO tenantDTO) { //(@RequestParam String tenantId, @RequestParam String db, @RequestParam String password) {
+    public ResponseEntity<Void> createTenant(@RequestBody TenantDTO tenantDTO) {
         tenantManagementService.createTenant(tenantDTO.getTenantId(), tenantDTO.getSchema());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/tenants/updateAll")
+    public ResponseEntity<Void> createAllTenant() {
+        tenantManagementService.updateAllTenantSchemas();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
