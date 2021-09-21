@@ -127,19 +127,4 @@ public class TenantSchemaManagementService {
         }
     }
 
-//    private static final class ListSchemaMapExtractor implements ResultSetExtractor<List<Tenant>> {
-//        @Override
-//        public List<Tenant> extractData(ResultSet rs) throws SQLException, DataAccessException {
-//            List<Tenant> schemas = new ArrayList<>();
-//            while (rs.next()) {
-//                Tenant t = Tenant.builder()
-//                    .tenantId(rs.getString("tenant_id"))
-//                    .schema(rs.getString("schema"))
-//                    .build();
-//                schemas.add(t);
-//            }
-//            return schemas;
-//        }
-//    }
-
 }

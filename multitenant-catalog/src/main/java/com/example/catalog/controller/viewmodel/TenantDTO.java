@@ -8,7 +8,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Setter
 public class TenantDTO {
     private String tenantId;
-    private String db;
-    private String password;
     private String schema;
 }
